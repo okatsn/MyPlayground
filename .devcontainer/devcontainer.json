@@ -1,0 +1,59 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or the definition README at
+// https://github.com/microsoft/vscode-dev-containers/tree/master/containers/docker-existing-dockerfile
+{
+    "name": "swc-forecast-insider",
+    // ===== Use Docker Compose =====
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "dev",
+    "shutdownAction": "stopCompose",
+    "workspaceFolder": "/home/jovyan/swc-forecast-insider",
+    "extensions": [
+        "ms-azuretools.vscode-docker",
+        "julialang.language-julia",
+        "colinfang.markdown-julia",
+        "mutantdino.resourcemonitor",
+        "shardulm94.trailing-spaces",
+        "cliffordfajardo.hightlight-selections-vscode",
+        "wdawson.better-kill-ring",
+        "oderwat.indent-rainbow",
+        "github.vscode-pull-request-github",
+        "mhutchie.git-graph",
+        "donjayamanne.githistory",
+        "eamodio.gitlens",
+        "bungcip.better-toml",
+        "ms-vscode.live-server",
+        "christian-kohler.path-intellisense",
+        "ms-python.python",
+        "editorconfig.editorconfig",
+        "shd101wyy.markdown-preview-enhanced",
+        "streetsidesoftware.code-spell-checker",
+        "gruntfuggly.todo-tree",
+        "ritwickdey.liveserver",
+    ],
+    "settings": {
+        "julia.environmentPath": "/home/jovyan/swc-forecast-insider",
+        "[julia]": {
+            // https://github.com/invenia/BlueStyle#vs-code-settings
+            "editor.detectIndentation": false,
+            "editor.insertSpaces": true,
+            "editor.tabSize": 4,
+            "files.insertFinalNewline": true,
+            "files.trimFinalNewlines": true,
+            "files.trimTrailingWhitespace": true,
+            "editor.selectionHighlight": true,
+            "editor.rulers": [
+                92
+            ]
+        },
+        "python.terminal.activateEnvironment": false,
+        "git.checkoutType": [
+            "local",
+            // "remote",
+            "tags"
+        ],
+        "files.associations": {
+            "*.dvc": "yaml",
+            "dvc.lock": "yaml"
+        }
+    }
+}
