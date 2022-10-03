@@ -1,22 +1,22 @@
 version: '3'
 
 services:
-  dev:
-    image: swc-forecast-insider-dev
+  dev_1:
+    image: my-playground
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
       args:
-        VARIANT: "1.6.5"
-        PROJECT_DIR: /home/jovyan/swc-forecast-insider
+        VARIANT: "1.6.7"
+        PROJECT_DIR: /home/jovyan/MyPlayground
     init: true
-    container_name: swc-forecast-insider-dev
+    container_name: my-playground
     environment:
       # https://cheaster.blogspot.com/2020/06/docker-composeyml-container-timezone.html
       - TZ=Asia/Taipei
     volumes:
       # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
-      - ..:/home/jovyan/swc-forecast-insider
+      - ..:/home/jovyan/MyPlayground
       # Persistent the julia depot
       - julia-depot:/home/jovyan/.julia
       # Avoid reinstall vscode extensions

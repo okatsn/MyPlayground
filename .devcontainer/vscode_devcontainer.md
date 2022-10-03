@@ -18,7 +18,28 @@ First, go to `".devcontainer/devcontainer.json"`:
 > 💡**Hints & Tips**
 > - When editing `devcontainer.json` with VS Code, you can hover over each property, such as `name`, `workspaceFolder`, etc., to check the brief description.
 
+### How this container is built
+Under the folder `".devcontainer"`:
+```graphviz
+digraph D {
+    "docker-compose.yml" 
+    "Dockerfile"
+    "devcontainer.json" [shape=box]
+
+    "devcontainer.json" -> "docker-compose.yml" [label="\"dockerComposeFile\": \"docker-compose.yml\""]
+
+    "docker-compose.yml" -> "Dockerfile" [label="dockerfile: .devcontainer/Dockerfile"]
+
+    "devcontainer.json" -> "Dockerfile" [style=dashed, color=grey, label="(or alternatively) \"build.dockerfile\"=\".devcontainer/Dockerfile\""]
+
+}
+
+```
+
+
 ### Brief note for `devcontainer.json`
+`devcontainer.json` defines how to access (or create) a development container. It does the followings: 
+
 Synchronizing Settings and Extensions of VS Code:
 - `"extensions"`: let everyone's vscode have the same addons
 - `"settings"`: keep everyone's vscode settings identical
@@ -53,6 +74,11 @@ In `".devcontainer/docker-compose.yml"`:
 - `command`: the commands to run in container "dev" **every time** this container is opened
 - `volumes`: Binding **Host directory** (left) with the **directory in the container** (right); in which, you can specify the real path in the host machine or use a named volume.
 
+##### More about `args`
+- ⚠️ Variable definitions under `args` overwrite the definition in `".devcontainer/Dockerfile"` **WHEN** 
+    - `"dockerComposeFile": "docker-compose.yml"` is specified in `".devcontainer/devcontainer.json"`, **and** 
+    - `dockerfile: .devcontainer/Dockerfile` is specified in `".devcontainer/docker-compose.yml"`.
+- In this case, a variable `VARIANT` should always be declared in `".devcontainer/Dockerfile"` no matter whether it is defined in `".devcontainer/docker-compose.yml"` or not.
 
 ##### More about `volumes` and named volume
 - Defining a named volume defines a special space managed by Docker in the host machine.
@@ -101,7 +127,8 @@ services:
         commands: sh -c "inv env.julia-daemon"
 ```
 Every time the container named "dev" is opened, the function `julia-daemon` in python script `"tasks/env.py"` is `inv`oked; this is done in the machine "dev" where julia and python are already installed when "dev" is built according to `".devcontainer/Dockerfile"`. 
-> - By default, Invoke searches tasks (scripts) in the directory named `"tasks"` or `"tasks.py"`. See the documentation of Invoke.
+> By default, Invoke searches tasks (scripts) in the directory named `"tasks"` or `"tasks.py"`. See the documentation of Invoke.
+> 
 > **Requirement**:
 > - `RUN mamba install ... invoke=1.6` in Dockerfile
 > - define `ns.add_collection(env)` in module `"tasks/__init__.py"` to allow functions in `"tasks/env.py"` to be called
@@ -192,7 +219,7 @@ Here are some examples:
 - The image you want to use to create a development container can be pulled from the container registry or built from a Dockerfile.
 - If a single container environment is not suitable for your use case, you can use `docker-compose.yml` to configure a multi-container environment (of course you can also use `docker-compose.yml` to configure a single container environment). [As of April 2022, `Remote - Containers` VS Code extension only supports running multiple containers with Docker Compose.](https://code.visualstudio.com/docs/remote/create-dev-container#:~:text=Fortunately%2C%20Remote%20%2D%20Containers%20supports%20Docker%20Compose%20managed%20multi%2Dcontainer%20configurations.) (If the markdown renderer cannot open the correct link, just use the URL directly)
 - There are three approaches to execute commands every time a container is opened: 
-    1. use `"runArgs"` in `".devcontainer/devcontainer.json"`
+    1. use `"runArgs"` in `".devcontainer/devcontainer.json"`; it supports [Docker CLI arguments (docker run)](https://docs.docker.com/engine/reference/commandline/run/) arguments.
     2. use `CMD` in the **last line** of `".devcontainer/Dockerfile"`; all precedently appeared `CMD` will be ignored (including those `FROM` a basis image)
     3. add `command` in `".devcontainer/docker-compose.yml"`
 - For best practice, **all** commands is expected to be executed by the container machine.

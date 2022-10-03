@@ -23,7 +23,9 @@ RUN apt-get update \
     && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 # Install Julia
-ARG VARIANT="1.6.5"
+ARG VARIANT="1.6.5.ToBeOverWritten"
+# it should be defined here, despite it will be overwritten by that defined in docker-compose.yml
+
 RUN mkdir /opt/julia-${VARIANT} \
     && curl -L https://julialang-s3.julialang.org/bin/linux/x64/`echo ${VARIANT} | cut -d. -f 1,2`/julia-${VARIANT}-linux-x86_64.tar.gz | tar zxf - -C /opt/julia-${VARIANT} --strip=1 \
     && ln -fs /opt/julia-${VARIANT}/bin/julia /usr/local/bin/julia
@@ -31,7 +33,9 @@ RUN mkdir /opt/julia-${VARIANT} \
 # NB_USER is defined in jupyter/minimal-notebook
 USER $NB_USER
 
-ARG PROJECT_DIR=/home/jovyan/julia-project
+ARG PROJECT_DIR=/home/jovyan/project_ToBeOverWritten
+# it should be defined here, despite it will overwritten by that in docker-compose.yml
+
 WORKDIR $PROJECT_DIR
 
 # TODO: CHECK!! use environment.yml, Project.toml and Manifest.toml to add python and julia packages
@@ -69,27 +73,32 @@ RUN mamba install --quiet --yes \
 
 # Add julia packages and precompile
 # NOTE: These packages will be added under @#.# (e.g. @v1.6)
+# PackageSpec(name=""), \
 RUN julia -e 'using Pkg; Pkg.update()' \
     && julia -e '\
         using Pkg; \
         Pkg.add( \
             [ \
-                PackageSpec(name="Revise", version="3.3"), \
-                PackageSpec(name="BenchmarkTools", version="1.2"), \
-                PackageSpec(name="OhMyREPL", version="0.5"), \
-                PackageSpec(name="JuliaFormatter", version="0.21"), \
-                PackageSpec(name="Documenter", version="0.27"), \
-                PackageSpec(name="LiveServer", version="0.7"), \
-                PackageSpec(name="Pluto", version="0.17"), \
-                PackageSpec(name="PlutoUI", version="0.7"), \
-                PackageSpec(name="DaemonMode", version="0.1"), \
-                PackageSpec(name="LocalCoverage", version="0.2"), \
+                PackageSpec(name="Revise"), \
+                PackageSpec(name="BenchmarkTools"), \
+                PackageSpec(name="OhMyREPL"), \
+                PackageSpec(name="JuliaFormatter"), \
+                PackageSpec(name="Documenter"), \
+                PackageSpec(name="LiveServer"), \
+                PackageSpec(name="Pluto"), \
+                PackageSpec(name="PlutoUI"), \
+                PackageSpec(name="DaemonMode"), \
+                PackageSpec(name="LocalCoverage"), \
+                PackageSpec(name="DataFrames"), \
+                PackageSpec(name="Markdown"), \
+                PackageSpec(name="Literate"), \
+                PackageSpec(name="LaTeXStrings"), \
             ] \
         ) \
     ' \
     && julia -e ' \
         using Pkg; \
-        Pkg.add(name="IJulia", version="1.23"); \
+        Pkg.add(name="IJulia"); \
         using IJulia \
     '
 

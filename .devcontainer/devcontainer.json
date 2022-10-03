@@ -1,37 +1,42 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json or the definition README at
 // https://github.com/microsoft/vscode-dev-containers/tree/master/containers/docker-existing-dockerfile
 {
-    "name": "swc-forecast-insider",
+    "name": "my-playground",
     // ===== Use Docker Compose =====
     "dockerComposeFile": "docker-compose.yml",
-    "service": "dev",
+    "service": "dev_1",
     "shutdownAction": "stopCompose",
-    "workspaceFolder": "/home/jovyan/swc-forecast-insider",
+    "workspaceFolder": "/home/jovyan/MyPlayground",
     "extensions": [
-        "ms-azuretools.vscode-docker",
-        "julialang.language-julia",
+        "ms-azuretools.vscode-docker",             // Docker
+        "julialang.language-julia",                // julia
         "colinfang.markdown-julia",
-        "mutantdino.resourcemonitor",
-        "shardulm94.trailing-spaces",
-        "cliffordfajardo.hightlight-selections-vscode",
-        "wdawson.better-kill-ring",
-        "oderwat.indent-rainbow",
-        "github.vscode-pull-request-github",
-        "mhutchie.git-graph",
+        "mhutchie.git-graph",                      // git and github
         "donjayamanne.githistory",
+        "github.vscode-pull-request-github",
         "eamodio.gitlens",
-        "bungcip.better-toml",
-        "ms-vscode.live-server",
+        "mathieu.vscode-github-actions",
+        "ms-python.python",                        // python
+        "ms-python.vscode-pylance",
+        "editorconfig.editorconfig",               // vscode
+        "shd101wyy.markdown-preview-enhanced",     // markdown
+        "streetsidesoftware.code-spell-checker",   // other code
+        "redhat.vscode-yaml", 
+        "bungcip.better-toml",                     
+        "bierner.emojisense",
+        "shardulm94.trailing-spaces",              // format and highlight
         "christian-kohler.path-intellisense",
-        "ms-python.python",
-        "editorconfig.editorconfig",
-        "shd101wyy.markdown-preview-enhanced",
-        "streetsidesoftware.code-spell-checker",
+        "cliffordfajardo.hightlight-selections-vscode",
+        "wdawson.better-kill-ring",                // other
+
+        "ms-vscode.live-server",
         "gruntfuggly.todo-tree",
         "ritwickdey.liveserver",
+        "nobuhito.printcode",
+        "mutantdino.resourcemonitor",
     ],
     "settings": {
-        "julia.environmentPath": "/home/jovyan/swc-forecast-insider",
+        "julia.environmentPath": "/home/jovyan/MyPlayground",
         "[julia]": {
             // https://github.com/invenia/BlueStyle#vs-code-settings
             "editor.detectIndentation": false,
@@ -45,6 +50,8 @@
                 92
             ]
         },
+        "highlightSelections.borderStyle": "solid",
+        "highlightSelections.borderWidth": "10px",
         "python.terminal.activateEnvironment": false,
         "git.checkoutType": [
             "local",
