@@ -23,7 +23,7 @@ RUN apt-get update \
     && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 # Install Julia
-ARG VARIANT="1.6.5.ToBeOverWritten"
+ARG VARIANT="1.X.ToBeOverWritten"
 # it should be defined here, despite it will be overwritten by that defined in docker-compose.yml
 
 RUN mkdir /opt/julia-${VARIANT} \
