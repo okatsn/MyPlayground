@@ -10,4 +10,4 @@ jobs:
         version: 1.6.7
     - run: | # this allows multi-line execution
           julia -e 'println("This is julia $(VERSION)")'
-          julia -e 'println("Does it work on a branch besides master?")'
+          julia -e 'println("Does it work on a branch besides master?"); println("Yes, it works!");'
