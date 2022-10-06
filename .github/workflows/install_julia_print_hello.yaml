@@ -1,0 +1,13 @@
+
+name: install-julia-print-hello
+on: [push]
+jobs:
+  install-julia:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: julia-actions/setup-julia@v1
+      with:
+        version: 1.6.7
+    - run: | # this allows multi-line execution
+          julia -e 'println("This is julia $(VERSION)")'
+          julia -e 'println("Does it work on a branch besides master?")'
