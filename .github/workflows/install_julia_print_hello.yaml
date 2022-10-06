@@ -8,4 +8,6 @@ jobs:
     - uses: julia-actions/setup-julia@v1
       with:
         version: 1.6.7
-    - run: julia -e 'println("Hello, World!")'
+    - run: | # this allows multi-line execution
+          julia -e 'println("This is julia $(VERSION)")'
+          julia -e 'println("Hello, World!")'
