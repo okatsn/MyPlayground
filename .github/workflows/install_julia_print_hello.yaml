@@ -11,3 +11,5 @@ jobs:
     - run: | # this allows multi-line execution
           julia -e 'println("This is julia $(VERSION)")'
           julia -e 'println("Does it work on a branch besides master?"); println("Yes, it works!");'
+          julia -e 'include("./.github/script/julia_script.jl")'
+          julia -e 'lineplot([-1, 2, 3, 7], [-1, 2, 9, 4])'
