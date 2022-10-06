@@ -13,5 +13,5 @@ jobs:
           julia -e 'println("This is julia $(VERSION)")'
           julia -e 'println("Does it work on a branch besides master?"); println("Yes, it works!");'
           julia -e 'println("Current directory: $(pwd())")'
-          julia -e 'include("./script/github_actions/julia_script.jl")'
+          julia -e 'include("script/github_actions/julia_script.jl")'
           julia -e 'lineplot([-1, 2, 3, 7], [-1, 2, 9, 4])'
