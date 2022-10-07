@@ -1,15 +1,13 @@
-
+define: &this_branch "trygithubaction"
 name: install-julia-print-hello
 
 # on: [push]
 on:
   push:
-    branches: [ trygithubaction ]
+    branches: [ *this_branch ]
 jobs:
   install-julia:
     runs-on: ubuntu-20.04
-    env:
-      THIS_BRANCH: trygithubaction
     steps:
     - uses: julia-actions/setup-julia@v1
       with:
@@ -51,7 +49,7 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: steps.checkout.ref2 # this is required and should be trygithubaction
+        branch: trygithubaction # this is required and should be trygithubaction
 
 # TOREAD:
 # Documenter
@@ -60,3 +58,6 @@ jobs:
 
 # KEYNOTE:
 # - Julia `--project` command: https://stackoverflow.com/questions/53613663/what-is-in-julia-project-command-line-option
+#
+# If you'd like to define variable for `run:`, see https://microsoft.github.io/code-with-engineering-playbook/continuous-delivery/devops-provider-recipes/github-actions/runtime-variables/runtime-variables/
+# If youd
