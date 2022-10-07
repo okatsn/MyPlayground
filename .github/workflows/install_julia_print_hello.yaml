@@ -28,7 +28,6 @@ jobs:
           echo "GITHUB_WORKSPACE:" ${GITHUB_WORKSPACE}
           echo "GITHUB_ACTION_REPOSITORY:" ${GITHUB_ACTION_REPOSITORY}
           echo "GITHUB_PATH: " ${GITHUB_PATH}
-          echo "github.ref: " ${github.ref}
           julia --project=. -e 'include("./script/github_actions/julia_script.jl")'
     - name: Save the result and commit # See https://github.com/orgs/community/discussions/26672
       id: hellocommit
