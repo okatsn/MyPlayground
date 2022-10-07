@@ -37,14 +37,14 @@ jobs:
           julia --project=. -e 'include("./script/github_actions/julia_script.jl")'
     - name: Save the result and commit # See https://github.com/orgs/community/discussions/26672
       id: hellocommit
+      continue-on-error: true
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
         git add --all
         git commit -m "Add changes" -a
-        if [-z "$(git status --porcelain)"] || echo 0; then
-          echo "::set-output name=push::false"
-        else
+        echo "::set-output name=push::false"
+        if [-n "$(git status --porcelain)"]; then
           git commit -m "Add changes" -a
           echo "::set-output name=push::true"
         fi
