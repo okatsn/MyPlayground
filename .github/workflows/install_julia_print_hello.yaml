@@ -9,17 +9,17 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: Set variable
-      run: echo '::set-output name=THIS_BRANCH::trygithubaction'
+      run: echo '::set-output name=THIS_BRANCH::trygithubaction' # SETME
       id: VAR
     - name: Print variable
-      run: echo "This branch is ${{steps.VAR.outputs.THIS_BRANCH}}" # see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-setting-a-value
+      run: echo "This branch is ${{steps.VAR.outputs.THIS_BRANCH}}" # see this to set variable: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-setting-a-value
     - uses: julia-actions/setup-julia@v1
       with:
         version: 1.6.7
     - uses: actions/checkout@v3 # see https://github.com/actions/checkout
       id: checkout
       with:
-        ref: trygithubaction
+        ref: ${{steps.VAR.outputs.THIS_BRANCH}}
     - name: Print message and execute a julia script
       run: | # `|` allows multi-line execution
           julia -e 'println("This is julia $(VERSION)")'
