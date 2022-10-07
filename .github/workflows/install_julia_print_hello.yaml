@@ -37,7 +37,7 @@ jobs:
           julia --project=. -e 'include("./script/github_actions/julia_script.jl")'
     - name: Save the result and commit # See https://github.com/orgs/community/discussions/26672
       id: hellocommit
-      continue-on-error: true
+      continue-on-error: true # continue-on-error: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
@@ -49,11 +49,12 @@ jobs:
           echo "::set-output name=push::true"
         fi
       ## push only when there are something staged
-    # echo "::set-output name=push::true"
+      #
+      # echo "::set-output name=push::true"
       ## commit and push anyway
-      # "$(git status --porcelain)" returns bash error:  "command not found" if returns nothing
-      # -z
-      #   string is null, that is, has zero length
+      ## "$(git status --porcelain)" returns bash error:  "command not found" if returns nothing
+      ## -z
+      ##   string is null, that is, has zero length
       shell: bash
     - name: Push changes
       if: steps.hellocommit.outputs.push == 'true'
