@@ -48,7 +48,7 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: steps.checkout.ref
+        branch: steps.checkout.with.ref # this shis required and should be trygithubaction
 
 # TOREAD:
 # Documenter
