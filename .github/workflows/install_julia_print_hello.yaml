@@ -8,6 +8,11 @@ jobs:
   install-julia:
     runs-on: ubuntu-20.04
     steps:
+    - name: Set variable
+      run: echo '::set-output name=THIS_BRANCH::trygithubaction'
+      id: VAR
+    - name: Print variable
+      run: echo "This branch is ${{steps.VAR.outputs.THIS_BRANCH}}" # see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-setting-a-value
     - uses: julia-actions/setup-julia@v1
       with:
         version: 1.6.7
@@ -48,12 +53,12 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{steps.checkout.with.ref}} #trygithubaction # this is required and should be trygithubaction
+        branch: ${{steps.VAR.outputs.THIS_BRANCH}} #trygithubaction # this is required and should be trygithubaction
 
 # TOREAD:
 # Documenter
 # - https://discourse.julialang.org/t/easy-workflow-file-for-setting-up-github-actions-ci-for-your-julia-package/49765
-
+# workflow-syntax-for-github-actions: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepswith
 
 # KEYNOTE:
 # - Julia `--project` command: https://stackoverflow.com/questions/53613663/what-is-in-julia-project-command-line-option
