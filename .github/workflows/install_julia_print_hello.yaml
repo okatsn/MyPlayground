@@ -45,7 +45,7 @@ jobs:
       shell: bash
     - name: Push changes
       if: steps.hellocommit.outputs.push == 'true'
-      uses: ad-m/github-push-action
+      uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: trygithubaction
