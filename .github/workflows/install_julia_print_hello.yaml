@@ -41,12 +41,18 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
         git add --all
-        if [-z "$(git status --porcelain)"]; then
-          echo "::set-output name=push::false"
-        else
-          git commit -m "Add changes" -a
-          echo "::set-output name=push::true"
-        fi
+        git commit -m "Add changes" -a
+        echo "::set-output name=push::true"
+      ## commit and push anyway
+      # "$(git status --porcelain)" returns bash error:  "command not found" if returns nothing
+
+      # if [-z "$(git status --porcelain)"]; then
+      #   echo "::set-output name=push::false"
+      # else
+      #   git commit -m "Add changes" -a
+      #   echo "::set-output name=push::true"
+      # fi
+      ## push only
       shell: bash
     - name: Push changes
       if: steps.hellocommit.outputs.push == 'true'
