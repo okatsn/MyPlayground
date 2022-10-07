@@ -13,6 +13,7 @@ jobs:
       id: VAR
     - name: Print variable
       run: echo "This branch is ${{steps.VAR.outputs.THIS_BRANCH}}" # see this to set variable: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-setting-a-value
+      # you can see other workflow commnads: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-setting-a-value
     - uses: julia-actions/setup-julia@v1
       with:
         version: 1.6.7

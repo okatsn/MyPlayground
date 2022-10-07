@@ -1,0 +1,15 @@
+name: github-context
+# https://docs.github.com/en/actions/learn-github-actions/contexts
+# https://www.ecanarys.com/Blogs/ArticleID/457/GitHub-Actions-Context
+on:
+  push:
+    branches: [ trygithubaction ]
+jobs:
+  list-all-context:
+  # https://stackoverflow.com/questions/70104600/complete-list-of-github-actions-contexts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
