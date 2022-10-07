@@ -1,10 +1,9 @@
-define: &this_branch "trygithubaction"
 name: install-julia-print-hello
 
 # on: [push]
 on:
   push:
-    branches: [ *this_branch ]
+    branches: [ trygithubaction ]
 jobs:
   install-julia:
     runs-on: ubuntu-20.04
@@ -15,7 +14,7 @@ jobs:
     - uses: actions/checkout@v3 # see https://github.com/actions/checkout
       id: checkout
       with:
-        ref: ${{THIS_BRANCH}}
+        ref: trygithubaction
     - name: Print message and execute a julia script
       run: | # `|` allows multi-line execution
           julia -e 'println("This is julia $(VERSION)")'
@@ -49,7 +48,7 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: trygithubaction # this is required and should be trygithubaction
+        branch: ${{steps.checkout.with.ref}} #trygithubaction # this is required and should be trygithubaction
 
 # TOREAD:
 # Documenter
