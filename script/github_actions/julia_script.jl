@@ -1,5 +1,3 @@
-using Pkg
-Pkg.instantiate()
 
 using UnicodePlots
 lnp = lineplot([-1, 2, 3, 7], [-1, 2, 9, 4], title="Example", name="my line", xlabel="x", ylabel="y")
