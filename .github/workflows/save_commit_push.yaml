@@ -7,6 +7,13 @@ jobs:
   basic-commit-push:
     runs-on: ubuntu-latest
     steps:
+    - name: Set Branch Name
+      run: echo '::set-output name=THIS_BRANCH::trygithubaction' # SETME
+      id: VAR
+    - uses: actions/checkout@v3 # see https://github.com/actions/checkout
+      id: checkout
+      with:
+        ref: ${{steps.VAR.outputs.THIS_BRANCH}}
     - name: write-append-message
       run: echo "Hello, world at $(date)" >> testfile.txt
     - name: Save the result and commit # See https://github.com/orgs/community/discussions/26672
@@ -35,4 +42,4 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: trygithubaction
+        branch: ${{steps.VAR.outputs.THIS_BRANCH}}
