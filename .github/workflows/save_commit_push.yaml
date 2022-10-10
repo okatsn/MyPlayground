@@ -24,7 +24,6 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
         git add --all
-        git commit -m "Add changes" -a
         echo "::set-output name=push::false"
         if [-n"$(git status --porcelain)"]; then
           git commit -m "Add changes" -a
@@ -44,3 +43,10 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: ${{steps.VAR.outputs.THIS_BRANCH}} # this is required and should be trygithubaction
+    # A much simplier approach
+    - name: write-append-message-again
+      run: echo "Hello, world again at $(date)" >> testfile2.txt
+    - uses: stefanzweifel/git-auto-commit-action@v4 # see https://github.com/marketplace/actions/git-auto-commit
+      with:
+        commit_message: Save myplot.txt
+        branch: ${{steps.VAR.outputs.THIS_BRANCH}}
