@@ -25,7 +25,7 @@ jobs:
         git config --local user.name "github-actions"
         git add --all
         echo "::set-output name=push::false"
-        if [-n"$(git status --porcelain)"]; then
+        if [-n "$(git status --porcelain)"]; then
           git commit -m "Add changes" -a
           echo "::set-output name=push::true"
         fi
@@ -48,5 +48,5 @@ jobs:
       run: echo "Hello, world again at $(date)" >> testfile2.txt
     - uses: stefanzweifel/git-auto-commit-action@v4 # see https://github.com/marketplace/actions/git-auto-commit
       with:
-        commit_message: Save myplot.txt
+        commit_message: Save testfile2.txt
         branch: ${{steps.VAR.outputs.THIS_BRANCH}}
