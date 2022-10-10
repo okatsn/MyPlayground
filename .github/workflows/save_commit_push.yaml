@@ -1,4 +1,5 @@
 name: save-commit-push
+
 on:
   push:
     branches:
@@ -25,7 +26,7 @@ jobs:
         git add --all
         git commit -m "Add changes" -a
         echo "::set-output name=push::false"
-        if [-n "$(git status --porcelain)"]; then
+        if [-n"$(git status --porcelain)"]; then
           git commit -m "Add changes" -a
           echo "::set-output name=push::true"
         fi
@@ -42,4 +43,4 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{steps.VAR.outputs.THIS_BRANCH}}
+        branch: ${{steps.VAR.outputs.THIS_BRANCH}} # this is required and should be trygithubaction
