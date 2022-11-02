@@ -46,7 +46,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # - name: Converts Markdown to HTML
+    # - name: Converts Markdown to HTML (Alternative)
     #   uses: jaywcjlove/markdown-to-html-cli@main
     #   with:
     #     source: README.md
@@ -69,12 +69,14 @@ jobs:
     - name: Rename as index.html
       run: mv README.html index.html
 
-    - name: Push pdf
+    - name: Commit
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
         git add README.pdf
         git commit -m "Update README.pdf"
+        git fetch
+      # fetch because you have other actions run simultaneously
       shell: bash
 
     - name: Push pdf
@@ -83,13 +85,13 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: trygithubaction
 
-    # - name: Keep data for next job
+    # - name: Keep data for next job (Not tested yet)
     #   uses: actions/upload-artifact@v3
     #   with:
     #     name: my-README-pdf
     #     path: README.pdf
 
-    - name: Pushes test file
+    - name: Push file to another repo
       uses: dmnemec/copy_file_to_another_repo_action@main
       # You may like to refer: [source code (enyrypoint.sh)](https://github.com/dmnemec/copy_file_to_another_repo_action/blob/main/entrypoint.sh)
       env:
