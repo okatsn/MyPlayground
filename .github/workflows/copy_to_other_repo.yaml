@@ -1,0 +1,104 @@
+# See
+# https://github.com/marketplace/actions/push-a-file-to-another-repository
+#
+# What I have done:
+# - Generate new personal access token (PAT) (fine-grained) [here](https://github.com/settings/tokens) for writing TestCI1; copy the github_pat key for later use.
+# - copy the [Example Workflow](https://github.com/marketplace/actions/push-a-file-to-another-repository#example-workflow) here and changes:
+#   - user_name,
+#   - user_email,
+#   - destination_folder,
+#   - destination_repo, and
+#   - source_file
+# - Add API_TOKEN_GITHUB to the secret of the MyPlayground repo with github_pat as its key. (Actions secrets > New repository secret)
+# - use @v3 instead of @v2 at actions/checkout, since @v2 in the example script causes error.
+
+#
+#
+# KEYNOTE:
+# - Use fine-grained PAT is better: If you generate PAT (classic) with permission to repo (and its 5 children) checked, you almost give control to everything of all your repositories. See [The ultimate guide to GitHub Actions authentication](https://michaelheap.com/ultimate-guide-github-actions-authentication/); you may also like to see this action https://github.com/mheap/github-update-secret that helps you renew tokens.
+# - Remember to renew your token every n days: 1. Regenerate the PAT 2. Copy the new github_pat key 3. Paste github_pat into your repo's secret (e.g., API_TOKEN_GITHUB under MyPlayground) and update.
+#
+# CHECKPOINT:
+
+
+name: Push File
+
+on:
+  push:
+    branches:
+      - trygithubaction
+    paths:
+      - README.md
+      # Only trigger actions when this file is edited. See https://github.com/BaileyJM02/markdown-to-pdf#usage-examples
+      # All files under a path is also supported, e.g., folder1/**
+      # See https://stackoverflow.com/questions/63822219/how-to-run-github-actions-workflow-only-if-the-pushed-files-are-in-a-specific-fo
+
+# permissions:
+#   contents: write
+# If 403 error occurred, set `permissions: content: write` may help. See https://stackoverflow.com/questions/73687176/permission-denied-to-github-actionsbot-the-requested-url-returned-error-403
+
+
+jobs:
+  copy-file:
+    runs-on: ubuntu-latest
+    # environment: github-pages # you have to already have this environment in this repo
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # - name: Converts Markdown to HTML
+    #   uses: jaywcjlove/markdown-to-html-cli@main
+    #   with:
+    #     source: README.md
+    #     output: index.html
+    #     github-corners: https://github.com/jaywcjlove/markdown-to-html-cli
+    #     favicon: data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>
+
+    - name: build pdf and html
+      uses: baileyjm02/markdown-to-pdf@v1 # https://github.com/BaileyJM02/markdown-to-pdf#markdown-to-pdf
+      with:
+        input_path: README.md
+        output_dir: ./
+        # images_dir: docs/images
+        # # for example <img src="./images/file-name.png">
+        # image_import: ./images
+        # # Default is true, can set to false to only get PDF files
+        build_html: true
+        build_pdf: true
+
+    - name: Rename as index.html
+      run: mv README.html index.html
+
+    - name: Push pdf
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "github-actions"
+        git add README.pdf
+        git commit -m "Update README.pdf"
+      shell: bash
+
+    - name: Push pdf
+      uses: ad-m/github-push-action@trygithubaction
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: trygithubaction
+
+    # - name: Keep data for next job
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: my-README-pdf
+    #     path: README.pdf
+
+    - name: Pushes test file
+      uses: dmnemec/copy_file_to_another_repo_action@main
+      # You may like to refer: [source code (enyrypoint.sh)](https://github.com/dmnemec/copy_file_to_another_repo_action/blob/main/entrypoint.sh)
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        # You cannot change the first API_TOKEN_GITHUB to arbitrary key, see https://stackoverflow.com/a/71824270
+      with:
+        source_file: 'index.html'
+        destination_repo: 'okatsn/TestCI1'
+        destination_folder: 'From/okatsn/MyPlayground'
+        user_email: 'okatsn@email.com'
+        user_name: 'okatsn'
+        commit_message: 'Push html to TestCI1'
