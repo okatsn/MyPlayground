@@ -21,7 +21,7 @@
 # CHECKPOINT:
 
 
-name: Push File
+name: Push File to another repo
 
 on:
   push:
@@ -69,21 +69,11 @@ jobs:
     - name: Rename as index.html
       run: mv README.html index.html
 
-    - name: Commit
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "github-actions"
-        git add README.pdf
-        git commit -m "Update README.pdf"
-        git fetch
-      # fetch because you have other actions run simultaneously
-      shell: bash
-
-    - name: Push pdf
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: trygithubaction
+    # In this repo you cannot push the README.pdf created since there is another action "save_commit_push.yaml".
+    # If there are two .yaml commit and pushing in parallel, things got to be very complicate. See the error message below:
+    #    ! [rejected]        HEAD -> trygithubaction (non-fast-forward)
+    #    error: failed to push some refs to 'https://github.com/okatsn/MyPlayground.git'
+    #    hint: Updates were rejected because the tip of your current branch is behind
 
     # - name: Keep data for next job (Not tested yet)
     #   uses: actions/upload-artifact@v3
