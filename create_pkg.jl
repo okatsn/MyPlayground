@@ -4,7 +4,7 @@ t = Template(;
     dir=joinpath(pwd(),"PkgLocation4Test"),
     julia=v"1.6",
     plugins=[
-        Git(; manifest=true),
+        Git(; manifest=false),
         GitHubActions(),
         Codecov(), # https://about.codecov.io/
         Coveralls(), # https://coveralls.io/
@@ -23,7 +23,7 @@ t = Template(;
 
 
 # t = Template(;user="okatsn", plugins = [GitHubActions(), Codecov()])
-t("swc-forecast-TWAI-23a")
+t("SWCForecast.jl")
 
 
 
