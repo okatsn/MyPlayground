@@ -25,7 +25,13 @@ t = Template(;
 # t = Template(;user="okatsn", plugins = [GitHubActions(), Codecov()])
 t("SWCForecast.jl")
 
-
+# Connect to remote:
+# 1. Switch to the local directory "SWCForecast"
+# 2. Add an empty repo on github (without anything!)
+# 3. `git push origin main`
+#
+# It can be quite tricky, see
+# - https://discourse.julialang.org/t/upload-new-package-to-github/56783
 
 
 
