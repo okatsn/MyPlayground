@@ -1,1 +1,1 @@
-JL_PROJECT_PKG_NAME = "SWCForecast"
+JL_PROJECT_PKG_NAME = "MyPlayground"

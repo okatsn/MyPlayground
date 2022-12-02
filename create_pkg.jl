@@ -6,7 +6,8 @@ t = Template(;
     plugins=[
         Git(; manifest=true),
         GitHubActions(),
-        Codecov(),
+        Codecov(), # https://about.codecov.io/
+        Coveralls(), # https://coveralls.io/
         Documenter{GitHubActions}(),
     ],
     pages=[
@@ -22,7 +23,7 @@ t = Template(;
 
 
 # t = Template(;user="okatsn", plugins = [GitHubActions(), Codecov()])
-t("SWCForecast.jl")
+t("swc-forecast-TWAI-23a")
 
 
 
