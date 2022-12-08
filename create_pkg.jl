@@ -27,7 +27,7 @@ t("SWCForecast.jl")
 
 # Connect to remote:
 # 1. Switch to the local directory "SWCForecast"
-# 2. Add an empty repo on github (without anything!)
+# 2. Add an empty repo "SWCForecast.jl" on github (without anything!)
 # 3. `git push origin main`
 #
 # It can be quite tricky, see
