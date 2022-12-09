@@ -30,6 +30,22 @@ RUN mkdir /opt/julia-${VARIANT} \
     && curl -L https://julialang-s3.julialang.org/bin/linux/x64/`echo ${VARIANT} | cut -d. -f 1,2`/julia-${VARIANT}-linux-x86_64.tar.gz | tar zxf - -C /opt/julia-${VARIANT} --strip=1 \
     && ln -fs /opt/julia-${VARIANT}/bin/julia /usr/local/bin/julia
 
+# # Copy configuration files
+## Starship configuration
+COPY starship.toml /home/$NB_USER/.config/starship.toml
+
+
+# # PASSWORD
+ARG PSWD="1234"
+ENV PSWD=$PSWD
+
+# ## Change (set) password
+# A user cannot use sudo if he has no password set
+# See https://stackoverflow.com/questions/2150882/how-to-automatically-add-user-account-and-password-with-a-bash-script
+RUN echo $NB_USER:$PSWD | chpasswd
+RUN echo root:$PSWD | chpasswd
+
+
 # NB_USER is defined in jupyter/minimal-notebook
 USER $NB_USER
 
