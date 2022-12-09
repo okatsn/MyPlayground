@@ -32,8 +32,11 @@ RUN mkdir /opt/julia-${VARIANT} \
 
 # # Copy configuration files
 ## Starship configuration
-COPY starship.toml /home/$NB_USER/.config/starship.toml
-
+COPY .devcontainer/starship.toml /home/$NB_USER/.config/starship.toml
+# !!! note
+#     - the path is relative to context in docker-compose.yml
+#     - prepare your starship.toml first. Here is [starship presets](https://starship.rs/presets/) for your reference
+RUN fix-permissions /home/$NB_USER/.config
 
 # # PASSWORD
 ARG PSWD="1234"
