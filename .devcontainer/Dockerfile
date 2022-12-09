@@ -18,14 +18,24 @@ RUN apt-get update \
         bash-completion \
         lcov \
         jq \
+        ghostscript \
     && echo $NB_USER ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$NB_USER \
     && chmod 0440 /etc/sudoers.d/$NB_USER \
     && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
+    # ghostscript for handling eps image files
+
+
 # Install Julia
 ARG VARIANT="1.X.ToBeOverWritten"
 # it should be defined here, despite it will be overwritten by that defined in docker-compose.yml
+ARG JULIA_PKG_DEVDIR="this.is.into.which.dev.clones.packages."
 
+# Set enviroment variable
+# RUN export JULIA_PKG_DEVDIR=${JULIA_PKG_DEVDIR}
+ENV JULIA_PKG_DEVDIR=${JULIA_PKG_DEVDIR}
+
+# it should be defined here, despite it will overwritten by that in docker-compose.yml
 RUN mkdir /opt/julia-${VARIANT} \
     && curl -L https://julialang-s3.julialang.org/bin/linux/x64/`echo ${VARIANT} | cut -d. -f 1,2`/julia-${VARIANT}-linux-x86_64.tar.gz | tar zxf - -C /opt/julia-${VARIANT} --strip=1 \
     && ln -fs /opt/julia-${VARIANT}/bin/julia /usr/local/bin/julia
@@ -92,10 +102,10 @@ RUN mamba install --quiet --yes \
 
 # Add julia packages and precompile
 # NOTE: These packages will be added under @#.# (e.g. @v1.6)
-# PackageSpec(name=""), \
 RUN julia -e 'using Pkg; Pkg.update()' \
     && julia -e '\
         using Pkg; \
+        Pkg.Registry.add(RegistrySpec(url = "https://github.com/okatsn/OkRegistry.git")); \
         Pkg.add( \
             [ \
                 PackageSpec(name="Revise"), \

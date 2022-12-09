@@ -1,3 +1,4 @@
+# This is [Compose file](https://docs.docker.com/compose/compose-file/compose-file-v3/)
 version: '3'
 
 services:
@@ -9,7 +10,11 @@ services:
       args:
         VARIANT: "1.6.7"
         PROJECT_DIR: /home/jovyan/MyPlayground
+        JULIA_PKG_DEVDIR: /home/jovyan/MyPlayground/temp/dev
+        # Some tests depend on JULIA_PKG_DEVDIR; do not change it.
+        # "MyPlayground" can be arbitrary; it's not required to be identical with the project directory in your WSL unbuntu (20.04)
     init: true
+    # See https://docs.docker.com/compose/compose-file/compose-file-v3/#init
     container_name: my-playground
     environment:
       # https://cheaster.blogspot.com/2020/06/docker-composeyml-container-timezone.html

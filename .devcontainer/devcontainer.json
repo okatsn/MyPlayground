@@ -18,22 +18,24 @@
         "mathieu.vscode-github-actions",
         "ms-python.python",                        // python
         "ms-python.vscode-pylance",
-        "editorconfig.editorconfig",               // vscode
+        "editorconfig.editorconfig",               // vscode: use .editorconfig at PROJECT_DIR
         "shd101wyy.markdown-preview-enhanced",     // markdown
         "streetsidesoftware.code-spell-checker",   // other code
-        "redhat.vscode-yaml", 
-        "bungcip.better-toml",                     
+        "redhat.vscode-yaml",
+        "bungcip.better-toml",
         "bierner.emojisense",
         "shardulm94.trailing-spaces",              // format and highlight
         "christian-kohler.path-intellisense",
-        "cliffordfajardo.hightlight-selections-vscode",
+        // html colors
+        "naumovs.color-highlight",
+        "royaction.color-manager",
         "wdawson.better-kill-ring",                // other
-
         "ms-vscode.live-server",
         "gruntfuggly.todo-tree",
         "ritwickdey.liveserver",
         "nobuhito.printcode",
         "mutantdino.resourcemonitor",
+        "felipecaputo.git-project-manager"
     ],
     "settings": {
         "julia.environmentPath": "/home/jovyan/MyPlayground",
@@ -50,8 +52,12 @@
                 92
             ]
         },
-        "highlightSelections.borderStyle": "solid",
-        "highlightSelections.borderWidth": "10px",
+        // html colors
+        "color-highlight.markerType": "dot-before",
+        "color-manager.autoStartIntellisense": true,
+        "gitProjectManager.baseProjectsFolders": [
+            "/home/jovyan/MyPlayground"
+            ], // this allows GPM (felipecaputo.git-project-manager) to open repo in the "projects" in a new window
         "python.terminal.activateEnvironment": false,
         "git.checkoutType": [
             "local",
@@ -61,6 +67,8 @@
         "files.associations": {
             "*.dvc": "yaml",
             "dvc.lock": "yaml"
-        }
+        },
+        "editor.occurrencesHighlight": true, // highlight at same words where cursor is on
+        "editor.selectionHighlight": false // highlight at same words selected
     }
 }
