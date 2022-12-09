@@ -167,7 +167,9 @@ RUN inv --print-completion-script bash > ~/.invoke-completion.sh \
 RUN sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y \
     && echo 'eval "$(starship init bash)"' >> ~/.bashrc \
     && mkdir -p ~/.config \
-    && echo -e '[conda]\nsymbol = "Conda "\nignore_base = false' > ~/.config/starship.toml
+    && echo -e '[conda]\nsymbol = "Conda "\nignore_base = false' >> ~/.config/starship.toml
+# ">" : overwrite
+# ">>": append
 
 RUN fix-permissions /home/$NB_USER
 
