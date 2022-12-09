@@ -7,3 +7,16 @@
 
 - Modify only the container building files (Dockerfile, docker-compose.yml, devcontainer.json) at branch **master**; otherwise, it is difficult to maintain.
 - That you should build your container at branch master only.
+
+!!! note
+
+- Hello, the previous julia_pkg branch breaks, for the possible reasons below:
+    - improper merge 
+        1. merge julia_pkg into master
+        2. do something in master
+        3. merge master in julia_pkg
+        4. many files are lost without showing on git history
+    - the container is broken
+        - git-graph and other vscode addons are not installed properly after building
+        - there is uncommitted changes in the git-graph interface, but I see nothing after clicking in.
+    
