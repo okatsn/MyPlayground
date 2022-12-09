@@ -1,7 +1,9 @@
+2022-11-02c
 # MyPlayground
 - MyPlayground is a container for trying anything. 
 - Make sure to use branch before doing anything.
 - Only the most basic environment setup is done in branch `master`
+
 
 !!! warning
 
@@ -20,3 +22,5 @@
         - git-graph and other vscode addons are not installed properly after building
         - there is uncommitted changes in the git-graph interface, but I see nothing after clicking in.
     
+
+- This branch initiated as master, and files from julia_pkg_unbroken are manually copied here, because when I merge this branch into `new_julia_pkg`, nothing different shows (however, there are indeed files not in `new_julia_pkg`)

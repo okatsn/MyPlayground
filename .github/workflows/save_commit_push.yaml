@@ -1,0 +1,70 @@
+name: save-commit-push
+
+on:
+  push:
+    branches:
+      - trygithubaction
+jobs:
+  basic-commit-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set Branch Name
+      run: echo '::set-output name=THIS_BRANCH::trygithubaction' # SETME
+      id: VAR
+    - uses: actions/checkout@v3 # see https://github.com/actions/checkout
+      id: checkout
+      with:
+        ref: ${{steps.VAR.outputs.THIS_BRANCH}}
+    - name: write-append-message
+      run: echo "Hello, world at $(date)" >> testfile.txt
+    - name: Save the result and commit # See https://github.com/orgs/community/discussions/26672
+      id: hellocommit
+      continue-on-error: true # Continue On Error at `[-n "$(git status --porcelain)"]` when there is nothing staged. For more about continue-on-error, see: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepscontinue-on-error
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "github-actions"
+        git add --all
+        echo "::set-output name=push::false"
+        if [-n "$(git status --porcelain)"]; then
+          git commit -m "Add changes" -a
+          echo "::set-output name=push::true"
+        fi
+      ## push only when there are something staged
+      #
+      # echo "::set-output name=push::true"
+      ## commit and push anyway
+      ## "$(git status --porcelain)" returns bash error:  "command not found" if returns nothing
+      ## -z
+      ##   string is null, that is, has zero length
+      shell: bash
+    - name: Push changes
+      if: steps.hellocommit.outputs.push == 'true'
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{steps.VAR.outputs.THIS_BRANCH}} # this is required and should be trygithubaction
+    # A much simplier approach
+    - name: write-append-message-again
+      run: echo "Hello, world again at $(date)" >> testfile2.txt
+    - uses: stefanzweifel/git-auto-commit-action@v4 # see https://github.com/marketplace/actions/git-auto-commit
+      with:
+        commit_message: Save testfile2.txt
+        branch: ${{steps.VAR.outputs.THIS_BRANCH}}
+
+
+# Simpler commit and push (README.pdf for example)
+    # - name: Commit
+    #   run: |
+    #     git config --local user.email "action@github.com"
+    #     git config --local user.name "github-actions"
+    #     git add README.pdf
+    #     git commit -m "Update README.pdf"
+    #     git fetch
+    #   # fetch because you have other actions run simultaneously
+    #   shell: bash
+
+    # - name: Push pdf
+    #   uses: ad-m/github-push-action@master
+    #   with:
+    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+    #     branch: trygithubaction
